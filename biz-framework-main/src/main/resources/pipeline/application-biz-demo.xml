@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+  			http://www.springframework.org/schema/util
+        	http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="demoConvert"
+          class="org.elvis.wang.framework.biz.pipeline.convert.DemoConvert" />
+
+    <!-- demo 调用链 -->
+    <bean id="demoPipeline" class="org.elvis.wang.framework.biz.pipeline.impl.PipelineImpl">
+        <property name="converter" ref="demoConvert" />
+        <property name="handlers">
+            <list>
+                <ref bean="preDemoHandler" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="preDemoHandler"
+          class="org.elvis.wang.framework.biz.pipeline.handler.DefaultHandler">
+        <property name="handlerFilter" ref="demoHandlerFilter" />
+        <property name="handlerItemMap" ref="demoHandlerItemMap" />
+    </bean>
+
+    <bean id="demoHandlerFilter" class="org.elvis.wang.framework.biz.pipeline.filter.DemoHandlerFilter"/>
+
+    <util:map id="demoHandlerItemMap" key-type="java.lang.String"
+              value-type="org.elvis.wang.framework.biz.pipeline.HandlerItem">
+        <entry key="preDemoHandlerItem">
+            <bean class="org.elvis.wang.framework.biz.pipeline.handleritem.demo.PreDemoHandlerItem">
+                <property name="execOrder" value="1" />
+            </bean>
+        </entry>
+        <entry key="perDemoHandlerItem">
+            <bean class="org.elvis.wang.framework.biz.pipeline.handleritem.demo.PerDemoHandlerItem">
+                <property name="execOrder" value="2" />
+            </bean>
+        </entry>
+    </util:map>
+</beans>

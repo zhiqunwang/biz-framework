@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <groupId>org.elvis.wang</groupId>
+    <artifactId>biz-framework</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <name>biz-framework</name>
+    <description>xxx</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+        <lombok.vesion>1.18.4</lombok.vesion>
+        <spring-boot.version>1.5.13.RELEASE</spring-boot.version>
+        <page.helper.version>1.2.2</page.helper.version>
+        <mybatis.spring.version>1.3.1</mybatis.spring.version>
+        <common.lang.version>3.4</common.lang.version>
+    </properties>
+
+    <modules>
+        <module>biz-framework-api</module>
+        <module>biz-framework-dal</module>
+        <module>biz-framework-integration</module>
+        <module>biz-framework-service</module>
+        <module>biz-common-util</module>
+        <module>biz-framework-biz</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!-- Spring Boot 依赖管理 BOM -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Mybatis相关支持库 - 开始 -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${page.helper.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.spring.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.vesion}</version>
+                <scope>provided</scope>
+            </dependency>
+
+
+            <!--API定义层-->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>biz-framework-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!--业务处理层-->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>biz-framework-biz</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!--service事务处理层-->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>biz-framework-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!--数据库层-->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>biz-framework-dal</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!--外部服务层-->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>biz-framework-integration</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!--工具类层-->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>biz-common-util</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${common.lang.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build> <pluginManagement>
+        <!-- 项目全局的Maven插件管理 -->
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <!-- explicitly define maven-deploy-plugin after other to force exec order -->
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+                <executions>
+                    <execution>
+                        <id>default-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <compilerArgs>
+                        <arg>-verbose</arg>
+                        <arg>-Xlint:all</arg>
+                        <arg>-deprecation</arg>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0-M2</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.commonjava.maven.enforcer</groupId>
+                        <artifactId>enforce-managed-deps-rule</artifactId>
+                        <version>1.0</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>enforce-java</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <!-- 只允许在dependencyManagement中管理版本号-->
+                                <!-- https://github.com/jdcasey/enforce-managed-deps-rule -->
+                                <requireManagedDeps
+                                        implementation="org.commonjava.maven.enforcer.rule.EnforceManagedDepsRule">
+                                    <checkProfiles>true</checkProfiles>
+                                    <failOnViolation>true</failOnViolation>
+                                </requireManagedDeps>
+                                <requireJavaVersion>
+                                    <version>${java.version}</version>
+                                </requireJavaVersion>
+
+                                <bannedDependencies>
+                                    <searchTransitive>true</searchTransitive>
+                                </bannedDependencies>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
